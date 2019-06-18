@@ -21,4 +21,22 @@ for edge in edges:
     edge[0] = int(edge[0]) - 1
     edge[1] = int(edge[1]) - 1
 g = Graph(int(num_of_points), colors, int(rocket_loc), int(lucky_loc), edges)
-g.show()
+backup = []
+index = 0
+while not g.goal_check():
+    actions = g.actions()
+    print(actions)
+    if not actions:
+        if not backup:
+            print("NOT SOLVABLE")
+            break
+        else:
+            print("NEED BACKUP")
+            this_backup = backup.pop()
+            g = this_backup[0]
+            index = this_backup[1] + 1
+    else:
+        backup.append([g, index])
+        g.do(actions[index])
+        index = 0
+print("GOAL BLIATCH")
