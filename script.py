@@ -1,6 +1,7 @@
 import fileinput
 import sys
 from Graph import *
+from copy import deepcopy
 
 # GET INPUT FROM FILE
 Input = fileinput.input(sys.argv[1])
@@ -33,10 +34,13 @@ while not g.goal_check():
         else:
             print("NEED BACKUP")
             this_backup = backup.pop()
+            print("someone was in ", g.rocket, " and lucky in ", g.lucky)
             g = this_backup[0]
+            print("someone was in ", g.rocket, " and lucky in ", g.lucky)
+            print("index was ", index, " and its ", this_backup[1] + 1)
             index = this_backup[1] + 1
     else:
-        backup.append([g, index])
+        backup.append([deepcopy(g), index])
         g.do(actions[index])
         index = 0
 print("GOAL BLIATCH")
