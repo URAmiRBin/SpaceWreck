@@ -3,6 +3,34 @@ import sys
 from Graph import *
 from copy import deepcopy
 
+
+def algo():
+    backup = []
+    index = 0
+    while not g.goal_check():
+        actions = g.actions()
+        if not actions:
+            if not backup:
+                print("NOT SOLVABLE")
+                break
+            else:
+                this_backup = backup.pop()
+                g.rocket = this_backup[0]
+                g.lucky = this_backup[1]
+                del output[-1]
+                index = this_backup[2] + 1
+        else:
+            for i in range(len(actions)):
+                if actions[i][0] == int(num_of_points) - 1:
+                    g.do(actions[i])
+                    output.append(actions[i])
+                    return
+            backup.append([deepcopy(g.rocket), deepcopy(g.lucky), index])
+            g.do(actions[index])
+            output.append(actions[index])
+            index = 0
+
+
 # GET INPUT FROM FILE
 Input = fileinput.input(sys.argv[1])
 line1 = Input[0].replace('\n', '').split(' ')
@@ -22,29 +50,7 @@ for edge in edges:
     edge[0] = int(edge[0]) - 1
     edge[1] = int(edge[1]) - 1
 g = Graph(int(num_of_points), colors, int(rocket_loc), int(lucky_loc), edges)
-backup = []
 output = []
-index = 0
-while not g.goal_check():
-    actions = g.actions()
-    print(actions)
-    if not actions:
-        if not backup:
-            print("NOT SOLVABLE")
-            break
-        else:
-            print("NEED BACKUP")
-            this_backup = backup.pop()
-            print("someone was in ", g.rocket, " and lucky in ", g.lucky)
-            g = this_backup[0]
-            del output[-1]
-            print("someone was in ", g.rocket, " and lucky in ", g.lucky)
-            print("index was ", index, " and its ", this_backup[1] + 1)
-            index = this_backup[1] + 1
-    else:
-        backup.append([deepcopy(g), index])
-        g.do(actions[index])
-        output = actions[index]
-        index = 0
-print("output:")
-print(output)
+algo()
+for action in output:
+    print(action[1], "   ", action[0] + 1)
