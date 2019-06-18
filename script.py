@@ -23,6 +23,7 @@ for edge in edges:
     edge[1] = int(edge[1]) - 1
 g = Graph(int(num_of_points), colors, int(rocket_loc), int(lucky_loc), edges)
 backup = []
+output = []
 index = 0
 while not g.goal_check():
     actions = g.actions()
@@ -36,11 +37,14 @@ while not g.goal_check():
             this_backup = backup.pop()
             print("someone was in ", g.rocket, " and lucky in ", g.lucky)
             g = this_backup[0]
+            del output[-1]
             print("someone was in ", g.rocket, " and lucky in ", g.lucky)
             print("index was ", index, " and its ", this_backup[1] + 1)
             index = this_backup[1] + 1
     else:
         backup.append([deepcopy(g), index])
         g.do(actions[index])
+        output = actions[index]
         index = 0
-print("GOAL BLIATCH")
+print("output:")
+print(output)
