@@ -4,7 +4,7 @@ from Graph import *
 from copy import deepcopy
 
 
-def algo():
+def algorithm():
     backup = []
     index = 0
     while not g.goal_check():
@@ -51,6 +51,6 @@ for edge in edges:
     edge[1] = int(edge[1]) - 1
 g = Graph(int(num_of_points), colors, int(rocket_loc), int(lucky_loc), edges)
 output = []
-algo()
+algorithm()
 for action in output:
     print(action[1], "   ", action[0] + 1)
